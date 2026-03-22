@@ -84,3 +84,11 @@ func (h *TokenAccountHandler) ListTokenAccounts(c *gin.Context) {
 	}
 	v1.HandleSuccess(c, resp)
 }
+
+func (h *TokenAccountHandler) HardDeleteBadAccount(c *gin.Context) {
+	if err := h.tokenAccountService.HardDeleteBadAccount(c.Request.Context()); err != nil {
+		v1.HandleError(c, err, err.Error())
+		return
+	}
+	v1.HandleSuccess(c, nil)
+}

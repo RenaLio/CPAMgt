@@ -70,6 +70,7 @@ func NewTaskServer(logger *log.Logger, tasks ...Task) *TaskServer {
 type Task interface {
 	Name() string
 	Run(ctx context.Context) error
+	CurrentStats() (any, error)
 }
 
 type TaskManager interface {

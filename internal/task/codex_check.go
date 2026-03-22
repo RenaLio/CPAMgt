@@ -33,6 +33,10 @@ type CodexCheckTask struct {
 	svc service.TokenAccountService
 }
 
+func (t *CodexCheckTask) CurrentStats() (any, error) {
+	return nil, nil
+}
+
 func NewCodexCheckTask(log *log.Logger, svc service.TokenAccountService) *CodexCheckTask {
 	return &CodexCheckTask{log: log, svc: svc}
 }

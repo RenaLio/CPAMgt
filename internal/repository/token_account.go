@@ -40,6 +40,7 @@ type TokenAccountRepository interface {
 	Update(ctx context.Context, tokenAccount *model.TokenAccount) error
 	Delete(ctx context.Context, id uint64) error
 	Restore(ctx context.Context, id uint64) error
+	HardDeleteBadAccount(ctx context.Context) error
 }
 
 type TokenAccountRepo struct {
@@ -158,6 +159,17 @@ func (r *TokenAccountRepo) Delete(ctx context.Context, id uint64) error {
 		return err
 	}
 	if effected == 0 {
+		return nil
+	}
+	return nil
+}
+
+func (r *TokenAccountRepo) HardDeleteBadAccount(ctx context.Context) error {
+	tx := r.DB(ctx).Unscoped().Where("status = ?", model.TokenAccountStatusAuthExpired).Delete(&model.TokenAccount{})
+	if tx.Error != nil {
+		return tx.Error
+	}
+	if tx.RowsAffected == 0 {
 		return nil
 	}
 	return nil

@@ -27,6 +27,10 @@ type CpaTask struct {
 	tokenSvc service.TokenAccountService
 }
 
+func (c *CpaTask) CurrentStats() (any, error) {
+	return nil, nil
+}
+
 func NewCpaTask(
 	log *log.Logger,
 	svc service.CpaAccountService,

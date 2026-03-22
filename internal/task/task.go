@@ -10,6 +10,10 @@ type MockTask struct {
 	logger *log.Logger
 }
 
+func (m *MockTask) CurrentStats() (any, error) {
+	return nil, nil
+}
+
 func NewMockTask(logger *log.Logger) *MockTask {
 	return &MockTask{logger: logger}
 }

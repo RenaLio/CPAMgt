@@ -20,6 +20,7 @@ type TokenAccountService interface {
 	ListAll(ctx context.Context) ([]model.TokenAccount, error)
 	Update(ctx context.Context, input *UpdateTokenAccountInput) (*model.TokenAccount, error)
 	Delete(ctx context.Context, id uint64) error
+	HardDeleteBadAccount(ctx context.Context) error
 }
 
 type tokenAccountService struct {
@@ -205,7 +206,7 @@ func (s *tokenAccountService) Update(ctx context.Context, input *UpdateTokenAcco
 	if input.CpaDelFlag != nil {
 		account.CpaDelFlag = *input.CpaDelFlag
 	}
-		
+
 	if input.ExpiredAt != nil {
 		account.ExpiredAt = *input.ExpiredAt
 	}
@@ -239,6 +240,10 @@ func (s *tokenAccountService) Update(ctx context.Context, input *UpdateTokenAcco
 
 func (s *tokenAccountService) Delete(ctx context.Context, id uint64) error {
 	return s.tokenRepo.Delete(ctx, id)
+}
+
+func (s *tokenAccountService) HardDeleteBadAccount(ctx context.Context) error {
+	return s.tokenRepo.HardDeleteBadAccount(ctx)
 }
 
 func normalizeExtra(extra json.RawMessage) json.RawMessage {
