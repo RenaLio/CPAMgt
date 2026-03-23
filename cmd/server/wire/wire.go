@@ -40,7 +40,7 @@ var handlerSet = wire.NewSet(
 	handler.NewCpaAccountHandler,
 )
 
-var serverSet = wire.NewSet(server.NewHTTPServer)
+var serverSet = wire.NewSet(server.NewHTTPServer, server.NewMigrate)
 
 var taskSet = wire.NewSet(task.NewMockTask, task.NewCodexCheckTask, task.NewCpaTask)
 
@@ -64,10 +64,11 @@ var taskExportSet = wire.NewSet(task2.GetTaskManager)
 func newApp(
 	httpServer *http.Server,
 	taskServer *task2.TaskServer,
+	migrate *server.Migrate,
 	// task *server.Task,
 ) *app.App {
 	return app.NewApp(
-		app.WithServer(httpServer, taskServer),
+		app.WithServer(httpServer, taskServer, migrate),
 		app.WithName("demo-server"),
 	)
 }

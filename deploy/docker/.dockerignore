@@ -1,0 +1,33 @@
+# Git
+.git
+.gitignore
+
+# IDE
+.idea
+.vscode
+*.swp
+*.swo
+
+# Build artifacts
+bin/
+.gocache/
+
+# Development files
+*.md
+!README.md
+
+# Test files
+*_test.go
+testdata/
+
+# Local config
+config/local.yaml
+
+# Storage (will be mounted as volume)
+storage/
+
+# Temporary files
+*.log
+*.tmp
+.DS_Store
+Thumbs.db

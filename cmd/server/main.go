@@ -18,8 +18,6 @@ func main() {
 		panic(err)
 	}
 
-	fmt.Printf("conf: %#v\n", conf)
-
 	logger := log.NewLog(conf)
 
 	app, cleanup, err := wire.NewWire(conf, logger)
@@ -28,7 +26,7 @@ func main() {
 		panic(err)
 	}
 	logger.Info("server start", slog.String("host", fmt.Sprintf("http://%s:%d", conf.Http.Host, conf.Http.Port)))
-	logger.Info("docs addr", slog.String("addr", fmt.Sprintf("http://%s:%d/swagger/index.html", conf.Http.Host, conf.Http.Port)))
+	//logger.Info("docs addr", slog.String("addr", fmt.Sprintf("http://%s:%d/swagger/index.html", conf.Http.Host, conf.Http.Port)))
 	if err = app.Run(context.Background()); err != nil {
 		panic(err)
 	}

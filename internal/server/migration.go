@@ -4,8 +4,6 @@ import (
 	"context"
 	"cpamgt/internal/model"
 	"cpamgt/internal/pkg/log"
-	"fmt"
-	"os"
 
 	"gorm.io/gorm"
 )
@@ -29,10 +27,9 @@ func (m *Migrate) Start(ctx context.Context) error {
 		return err
 	}
 	m.logger.Info("AutoMigrate success")
-	os.Exit(0)
+	//os.Exit(0)
 	return nil
 }
 func (m *Migrate) Stop(ctx context.Context) error {
-	fmt.Println("AutoMigrate stop")
 	return nil
 }

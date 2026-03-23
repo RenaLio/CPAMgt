@@ -18,7 +18,6 @@ import (
 	"cpamgt/internal/task"
 	"cpamgt/pkg/app"
 	"cpamgt/pkg/server/http"
-
 	"github.com/google/wire"
 )
 
@@ -51,7 +50,8 @@ func NewWire(configConfig *config.Config, logger *log.Logger) (*app.App, func(),
 		CpaAccount:   cpaAccountHandler,
 	}
 	httpServer := server.NewHTTPServer(routerDeps)
-	appApp := newApp(httpServer, taskServer)
+	migrate := server.NewMigrate(db, logger)
+	appApp := newApp(httpServer, taskServer, migrate)
 	return appApp, func() {
 	}, nil
 }
@@ -64,7 +64,7 @@ var serviceSet = wire.NewSet(service.NewService, service.NewTokenAccountService,
 
 var handlerSet = wire.NewSet(handler.NewHandler, handler.NewHealthHandler, handler.NewTaskManageHandler, handler.NewTokenAccountHandler, handler.NewCpaAccountHandler)
 
-var serverSet = wire.NewSet(server.NewHTTPServer)
+var serverSet = wire.NewSet(server.NewHTTPServer, server.NewMigrate)
 
 var taskSet = wire.NewSet(task.NewMockTask, task.NewCodexCheckTask, task.NewCpaTask)
 
@@ -88,7 +88,8 @@ var taskExportSet = wire.NewSet(task2.GetTaskManager)
 func newApp(
 	httpServer *http.Server,
 	taskServer *task2.TaskServer,
+	migrate *server.Migrate,
 
 ) *app.App {
-	return app.NewApp(app.WithServer(httpServer, taskServer), app.WithName("demo-server"))
+	return app.NewApp(app.WithServer(httpServer, taskServer, migrate), app.WithName("demo-server"))
 }

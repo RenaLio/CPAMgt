@@ -12,7 +12,6 @@ import (
 	"cpamgt/internal/repository"
 	"cpamgt/internal/server"
 	"cpamgt/pkg/app"
-
 	"github.com/google/wire"
 )
 

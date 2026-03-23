@@ -1,0 +1,54 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: ../..
+      dockerfile: deploy/docker/Dockerfile
+      args:
+        APP_ENV: prod
+    container_name: cpa-mgt
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    volumes:
+      # 持久化存储目录 (sqlite 数据库和日志)
+      - ./storage:/app/storage
+      # 自定义配置文件
+      - ./config:/app/config:ro
+    environment:
+      - TZ=Asia/Shanghai
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:8080/v1/ping"]
+      interval: 30s
+      timeout: 3s
+      retries: 3
+      start_period: 5s
+
+  # 可选：MySQL 服务
+  # mysql:
+  #   image: mysql:8.0
+  #   container_name: cpa-mgt-mysql
+  #   restart: unless-stopped
+  #   environment:
+  #     MYSQL_ROOT_PASSWORD: root123456
+  #     MYSQL_DATABASE: cpa_mgt
+  #     TZ: Asia/Shanghai
+  #   volumes:
+  #     - mysql_data:/var/lib/mysql
+  #   ports:
+  #     - "3306:3306"
+
+  # 可选：Redis 服务
+  # redis:
+  #   image: redis:7-alpine
+  #   container_name: cpa-mgt-redis
+  #   restart: unless-stopped
+  #   volumes:
+  #     - redis_data:/data
+  #   ports:
+  #     - "6379:6379"
+
+# volumes:
+#   mysql_data:
+#   redis_data:
