@@ -1,7 +1,7 @@
 package handler
 
 import (
-	"cpamgt/pkg/log"
+	"cpamgt/internal/pkg/log"
 
 	"github.com/gin-gonic/gin"
 )

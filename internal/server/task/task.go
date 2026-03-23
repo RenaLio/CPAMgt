@@ -2,7 +2,7 @@ package task
 
 import (
 	"context"
-	"cpamgt/pkg/log"
+	"cpamgt/internal/pkg/log"
 	"errors"
 	"sort"
 	"strings"

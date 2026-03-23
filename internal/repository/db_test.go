@@ -4,7 +4,7 @@ import (
 	"context"
 	"cpamgt/internal/config"
 	"cpamgt/internal/model"
-	"cpamgt/pkg/log"
+	"cpamgt/internal/pkg/log"
 	"errors"
 	"log/slog"
 	"os"

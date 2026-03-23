@@ -23,14 +23,17 @@ type Config struct {
 		} `mapstructure:"redis"`
 	} `mapstructure:"data"`
 	Log struct {
-		Level         string `mapstructure:"log_level"`
-		Encoding      string `mapstructure:"encoding"`
-		LogPath       string `mapstructure:"log_path"`
-		ErrorFileName string `mapstructure:"error_file_name"`
-		FileName      string `mapstructure:"log_file_name"`
-		MaxBackups    int    `mapstructure:"max_backups"`
-		MaxAge        int    `mapstructure:"max_age"`
-		MaxSize       int    `mapstructure:"max_size"`
-		Compress      bool   `mapstructure:"compress"`
+		Level           string `mapstructure:"log_level"`
+		Mode            string `mapstructure:"mode"`
+		FileEncoding    string `mapstructure:"file_encoding"`
+		ConsoleEncoding string `mapstructure:"console_encoding"`
+		Encoding        string `mapstructure:"encoding"`
+		LogPath         string `mapstructure:"log_path"`
+		FileName        string `mapstructure:"log_file_name"`
+		ErrorFileName   string `mapstructure:"error_file_name"`
+		MaxBackups      int    `mapstructure:"max_backups"`
+		MaxAge          int    `mapstructure:"max_age"`
+		MaxSize         int    `mapstructure:"max_size"`
+		Compress        bool   `mapstructure:"compress"`
 	} `mapstructure:"log"`
 }

@@ -3,7 +3,8 @@ package repository
 import (
 	"context"
 	"cpamgt/internal/config"
-	"cpamgt/pkg/log"
+	"cpamgt/internal/pkg/log"
+	"cpamgt/internal/pkg/sloggorm"
 	"fmt"
 
 	"time"
@@ -22,6 +23,7 @@ func NewDB(conf *config.Config, logger *log.Logger) *gorm.DB {
 		err error
 	)
 
+	dbLogger := sloggorm.New(logger.Logger)
 	driver := conf.Data.DB.User.Driver
 	dsn := conf.Data.DB.User.DSN
 
@@ -30,6 +32,7 @@ func NewDB(conf *config.Config, logger *log.Logger) *gorm.DB {
 	case "mysql":
 		db, err = gorm.Open(mysql.Open(dsn), &gorm.Config{
 			//Logger: logger,
+			Logger: dbLogger,
 		})
 	case "postgres":
 		db, err = gorm.Open(postgres.New(postgres.Config{
@@ -37,7 +40,9 @@ func NewDB(conf *config.Config, logger *log.Logger) *gorm.DB {
 			PreferSimpleProtocol: true, // disables implicit prepared statement usage
 		}), &gorm.Config{})
 	case "sqlite":
-		db, err = gorm.Open(sqlite.Open(dsn), &gorm.Config{})
+		db, err = gorm.Open(sqlite.Open(dsn), &gorm.Config{
+			Logger: dbLogger,
+		})
 	default:
 		panic("unknown db driver")
 	}

@@ -14,8 +14,10 @@ data:
 
 log:
   log_level: debug
-  encoding: json           # json or console
-  log_path: "./storage/logs"
+  mode: both            # console or file or both
+  file_encoding: json
+  console_encoding: console # json or console
+  log_path: "./storage/local_logs"
   error_log_name: "error.log"
   log_file_name: "server.log"
   max_backups: 30

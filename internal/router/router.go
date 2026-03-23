@@ -3,7 +3,7 @@ package router
 import (
 	"cpamgt/internal/config"
 	"cpamgt/internal/handler"
-	"cpamgt/pkg/log"
+	"cpamgt/internal/pkg/log"
 
 	"github.com/gin-gonic/gin"
 )

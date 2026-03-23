@@ -3,7 +3,7 @@ package server
 import (
 	"context"
 	"cpamgt/internal/model"
-	"cpamgt/pkg/log"
+	"cpamgt/internal/pkg/log"
 	"fmt"
 	"os"
 

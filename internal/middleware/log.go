@@ -1,7 +1,7 @@
 package middleware
 
 import (
-	"cpamgt/pkg/log"
+	"cpamgt/internal/pkg/log"
 	"time"
 
 	"github.com/gin-gonic/gin"

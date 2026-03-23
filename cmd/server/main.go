@@ -4,7 +4,7 @@ import (
 	"context"
 	"cpamgt/cmd/server/wire"
 	"cpamgt/internal/config"
-	"cpamgt/pkg/log"
+	"cpamgt/internal/pkg/log"
 	"flag"
 	"fmt"
 	"log/slog"

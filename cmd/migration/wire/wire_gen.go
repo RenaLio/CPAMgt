@@ -8,10 +8,11 @@ package wire
 
 import (
 	"cpamgt/internal/config"
+	"cpamgt/internal/pkg/log"
 	"cpamgt/internal/repository"
 	"cpamgt/internal/server"
 	"cpamgt/pkg/app"
-	"cpamgt/pkg/log"
+
 	"github.com/google/wire"
 )
 

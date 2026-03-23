@@ -9,6 +9,7 @@ package wire
 import (
 	"cpamgt/internal/config"
 	"cpamgt/internal/handler"
+	"cpamgt/internal/pkg/log"
 	"cpamgt/internal/repository"
 	"cpamgt/internal/router"
 	"cpamgt/internal/server"
@@ -16,8 +17,8 @@ import (
 	"cpamgt/internal/service"
 	"cpamgt/internal/task"
 	"cpamgt/pkg/app"
-	"cpamgt/pkg/log"
 	"cpamgt/pkg/server/http"
+
 	"github.com/google/wire"
 )
 

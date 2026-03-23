@@ -36,6 +36,7 @@ func NewHTTPServer(deps *router.RouterDeps) *http.Server {
 		}
 		c.FileFromFS("dist/index.html", nethttp.FS(web.Assets()))
 	})
+
 	s.Use(gin.Recovery())
 	s.Use(
 		middleware.CORSMiddleware(),

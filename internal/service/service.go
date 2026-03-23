@@ -2,8 +2,8 @@ package service
 
 import (
 	"context"
+	"cpamgt/internal/pkg/log"
 	"cpamgt/internal/repository"
-	"cpamgt/pkg/log"
 )
 
 type Service struct {

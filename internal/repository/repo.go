@@ -2,7 +2,7 @@ package repository
 
 import (
 	"context"
-	"cpamgt/pkg/log"
+	"cpamgt/internal/pkg/log"
 	"time"
 
 	"gorm.io/gorm"
