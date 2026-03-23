@@ -50,6 +50,15 @@ log:
   mode: both
 ```
 
+### 环境变量
+
+| 变量名 | 说明 | 默认值 |
+|--------|------|--------|
+| `HTTP_PROXY` | HTTP 代理地址 | - |
+| `HTTPS_PROXY` | HTTPS 代理地址 | - |
+| `CODEX_CHECK_POOL_SIZE` | Codex 账户检查任务并发数 | 2 |
+| `CPA_POOL_SIZE` | CPA 同步任务并发数 | 3 |
+
 ## 架构
 
 ```
