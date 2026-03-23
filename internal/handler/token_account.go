@@ -77,10 +77,34 @@ func (h *TokenAccountHandler) ListTokenAccounts(c *gin.Context) {
 		v1.HandleError(c, v1.ErrBadRequest, err.Error())
 		return
 	}
-	resp, err := h.tokenAccountService.List(c.Request.Context(), params)
+	data, err := h.tokenAccountService.List(c.Request.Context(), params)
 	if err != nil {
 		v1.HandleError(c, err, err.Error())
 		return
+	}
+	resp := v1.ListResponse[v1.TokenAccountRespItem]{
+		Page:     data.Page,
+		PageSize: data.PageSize,
+		Total:    data.Total,
+		Items:    make([]v1.TokenAccountRespItem, len(data.Items)),
+	}
+	for i, item := range data.Items {
+		resp.Items[i] = v1.TokenAccountRespItem{
+			ID:               item.ID,
+			TenantID:         item.TenantID,
+			AccountID:        item.AccountID,
+			Email:            item.Email,
+			AccountType:      item.AccountType,
+			Status:           string(item.Status),
+			Percent:          item.Percent,
+			CpaDelFlag:       item.CpaDelFlag,
+			LastRefresh:      item.LastRefresh,
+			QuotaRefreshTime: item.QuotaRefreshTime,
+			ExpiredAt:        item.ExpiredAt,
+			Extra:            item.Extra,
+			CreatedAt:        item.CreatedAt,
+			UpdatedAt:        item.UpdatedAt,
+		}
 	}
 	v1.HandleSuccess(c, resp)
 }

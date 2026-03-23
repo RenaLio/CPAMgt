@@ -27,4 +27,21 @@ type ListTokenAccountsRequest struct {
 	PageSize int                       `form:"pageSize,default=20" binding:"min=1,max=200"`
 }
 
-type ListTokenAccountsResponse = ListResponse[model.TokenAccount]
+type TokenAccountRespItem struct {
+	ID               uint64          `json:"id"`
+	TenantID         uint64          `json:"tenantId"`
+	AccountID        string          `json:"accountId"`
+	Email            string          `json:"email"`
+	AccountType      string          `json:"type"`
+	Status           string          `json:"status"`
+	Percent          int64           `json:"percent"`
+	CpaDelFlag       uint8           `json:"cpaFlag"`
+	LastRefresh      *time.Time      `json:"lastRefresh"`
+	QuotaRefreshTime *time.Time      `json:"quotaRefreshTime"`
+	ExpiredAt        time.Time       `json:"expiredAt"`
+	Extra            json.RawMessage `json:"extra"`
+	CreatedAt        time.Time       `json:"createdAt"`
+	UpdatedAt        time.Time       `json:"updatedAt"`
+}
+
+type ListTokenAccountsResponse = ListResponse[TokenAccountRespItem]
