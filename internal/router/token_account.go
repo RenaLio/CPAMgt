@@ -12,6 +12,7 @@ func SetTokenAccountRoutes(r *gin.RouterGroup, deps *RouterDeps) {
 	{
 		g.POST("", deps.TokenAccount.CreateTokenAccount)
 		g.POST("/batch", deps.TokenAccount.CreateTokenAccountBatch)
+		g.POST("/refresh_quota", deps.TokenAccount.RefreshTokenAccountQuota)
 		g.GET("/:id", deps.TokenAccount.GetTokenAccountByID)
 		g.GET("", deps.TokenAccount.ListTokenAccounts)
 		g.DELETE("/bad", deps.TokenAccount.HardDeleteBadAccount)

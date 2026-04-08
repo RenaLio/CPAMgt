@@ -10,7 +10,8 @@ data:
 #      driver: mysql
 #      dsn: root:123456@tcp(localhost:3306)/cpa_mgt
       driver: sqlite
-      dsn: storage/nunu-test.db?_busy_timeout=5000
+      dsn:  storage/nunu-test.db?_busy_timeout=5000&_journal_mode=WAL&_synchronous=NORMAL&_cache_size=-10000&_temp_store=MEMORY&_pragmas_cache_size=1000
+#      dsn: storage/nunu-test.db?_busy_timeout=5000
 
 log:
   log_level: debug

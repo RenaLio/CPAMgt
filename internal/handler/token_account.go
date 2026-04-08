@@ -116,3 +116,11 @@ func (h *TokenAccountHandler) HardDeleteBadAccount(c *gin.Context) {
 	}
 	v1.HandleSuccess(c, nil)
 }
+
+func (h *TokenAccountHandler) RefreshTokenAccountQuota(c *gin.Context) {
+	if err := h.tokenAccountService.ResetQuotaRefreshTime(c.Request.Context()); err != nil {
+		v1.HandleError(c, err, err.Error())
+		return
+	}
+	v1.HandleSuccess(c, nil)
+}

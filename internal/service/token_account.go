@@ -21,6 +21,7 @@ type TokenAccountService interface {
 	Update(ctx context.Context, input *UpdateTokenAccountInput) (*model.TokenAccount, error)
 	Delete(ctx context.Context, id uint64) error
 	HardDeleteBadAccount(ctx context.Context) error
+	ResetQuotaRefreshTime(ctx context.Context) error
 }
 
 type tokenAccountService struct {
@@ -244,6 +245,10 @@ func (s *tokenAccountService) Delete(ctx context.Context, id uint64) error {
 
 func (s *tokenAccountService) HardDeleteBadAccount(ctx context.Context) error {
 	return s.tokenRepo.HardDeleteBadAccount(ctx)
+}
+
+func (s *tokenAccountService) ResetQuotaRefreshTime(ctx context.Context) error {
+	return s.tokenRepo.ResetQuotaRefreshTime(ctx)
 }
 
 func normalizeExtra(extra json.RawMessage) json.RawMessage {

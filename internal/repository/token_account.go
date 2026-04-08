@@ -4,6 +4,7 @@ import (
 	"context"
 	v1 "cpamgt/api/v1"
 	"errors"
+	"time"
 
 	"cpamgt/internal/model"
 
@@ -40,6 +41,7 @@ type TokenAccountRepository interface {
 	Update(ctx context.Context, tokenAccount *model.TokenAccount) error
 	Delete(ctx context.Context, id uint64) error
 	Restore(ctx context.Context, id uint64) error
+	ResetQuotaRefreshTime(ctx context.Context) error
 	HardDeleteBadAccount(ctx context.Context) error
 }
 
@@ -173,6 +175,13 @@ func (r *TokenAccountRepo) HardDeleteBadAccount(ctx context.Context) error {
 		return nil
 	}
 	return nil
+}
+
+func (r *TokenAccountRepo) ResetQuotaRefreshTime(ctx context.Context) error {
+	db := r.baseQuery(ctx, false)
+	now := time.Now()
+	return db.Where("status = ?", model.TokenAccountStatusQuotaExhausted).
+		Update("quota_refresh_time", now).Error
 }
 
 func (r *TokenAccountRepo) Restore(ctx context.Context, id uint64) error {
