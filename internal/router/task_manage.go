@@ -13,6 +13,5 @@ func SetTaskManageRoutes(r *gin.RouterGroup, deps *RouterDeps) {
 		g.GET("", deps.TaskMgt.ListTasks)
 		g.GET("/:name", deps.TaskMgt.GetTask)
 		g.PATCH("/:name", deps.TaskMgt.UpdateNamedTaskConfig)
-
 	}
 }

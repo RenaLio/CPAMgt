@@ -181,9 +181,6 @@ func (s *tokenAccountService) Update(ctx context.Context, input *UpdateTokenAcco
 		account.AccessToken = strings.TrimSpace(*input.AccessToken)
 	}
 	if input.RefreshToken != nil {
-		if strings.TrimSpace(*input.RefreshToken) == "" {
-			return nil, errors.New("refresh_token is required")
-		}
 		account.RefreshToken = strings.TrimSpace(*input.RefreshToken)
 	}
 	if input.AccountID != nil {

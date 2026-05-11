@@ -36,3 +36,13 @@ bin/
 
 storage/
 
+# pi coding agent
+.pi/
+.pi-lens/
+.pi.local/
+pi.toml
+pi.yaml
+pi.json
+.pi-history
+.pi-session
+

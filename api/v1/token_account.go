@@ -9,7 +9,7 @@ import (
 type CreateTokenAccountRequest struct {
 	IDToken      string          `json:"id_token" binding:"required"`
 	AccessToken  string          `json:"access_token" binding:"required"`
-	RefreshToken string          `json:"refresh_token" binding:"required"`
+	RefreshToken string          `json:"refresh_token"`
 	AccountID    string          `json:"account_id" binding:"required"`
 	Email        string          `json:"email" binding:"required"`
 	Type         string          `json:"type" binding:"required"`

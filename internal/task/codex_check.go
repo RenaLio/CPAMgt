@@ -113,18 +113,21 @@ func (t *CodexCheckTask) CheckAccount(ctx context.Context, account model.TokenAc
 	extra := make(map[string]any)
 	extra["start_status"] = account.Status
 
-	refrefreshTokenExpired := false
+	refreshTokenExpired := false
 	codexClient := codex.NewClient(account.AccessToken, account.RefreshToken, account.AccountID, httpc)
+	if account.RefreshToken == "" {
+		refreshTokenExpired = true
+	}
 
-	// 提前6天刷新access_token
-	if account.ExpiredAt.Add(6 * time.Hour * 24).Before(time.Now()) {
+	// 提前6天刷新access_token，但需要有refresh_token
+	if account.RefreshToken != "" && account.ExpiredAt.Add(6*time.Hour*24).Before(time.Now()) {
 		trace := "refresh_token"
 
 		data, err := codexClient.RefreshTokens(ctx)
 		if err != nil {
 			extra["refresh_token_error"] = err.Error()
 			if errors.Is(err, codex.ErrTokenExpired) {
-				refrefreshTokenExpired = true
+				refreshTokenExpired = true
 			}
 			t.Log(ctx).Warn("failed to refresh token", "err", err)
 			trace += "[fail]"
@@ -134,7 +137,8 @@ func (t *CodexCheckTask) CheckAccount(ctx context.Context, account model.TokenAc
 			account.RefreshToken = data.RefreshToken
 			account.Email = data.Email
 			account.ExpiredAt = data.Expire
-			account.LastRefresh = new(time.Now())
+			tRefresh := time.Now()
+			account.LastRefresh = &tRefresh
 			trace += "[success]"
 		}
 		fnTrace = append(fnTrace, trace)
@@ -158,15 +162,27 @@ func (t *CodexCheckTask) CheckAccount(ctx context.Context, account model.TokenAc
 			t.Log(ctx).Warn("failed to get usage", "err", err)
 			trace += "[fail]"
 		} else {
-			account.QuotaRefreshTime = new(time.Unix(data.RateLimit.PrimaryWindow.ResetAt, 0))
-			account.Percent = int64(data.RateLimit.PrimaryWindow.UsedPercent)
+			// 直接用 limit_reached 判断
+			notRemainingUsage = data.RateLimit.LimitReached
+
+			// percent 取两个 window 中较大的百分比
+			maxPercent := data.RateLimit.PrimaryWindow.UsedPercent
+			resetAt := data.RateLimit.PrimaryWindow.ResetAt
+			if data.RateLimit.SecondaryWindow != nil && data.RateLimit.SecondaryWindow.UsedPercent > maxPercent {
+				maxPercent = data.RateLimit.SecondaryWindow.UsedPercent
+			}
+			account.Percent = int64(maxPercent)
+
+			// QuotaRefreshTime: 如果耗尽则取最晚的 resetAt，否则用 primary
+			if notRemainingUsage && data.RateLimit.SecondaryWindow != nil && data.RateLimit.SecondaryWindow.ResetAt > resetAt {
+				resetAt = data.RateLimit.SecondaryWindow.ResetAt
+			}
+			t := time.Unix(resetAt, 0)
+			account.QuotaRefreshTime = &t
+
 			trace += "[success]"
-			if account.Percent >= 100 {
-				account.Percent = 100
-				notRemainingUsage = true
+			if notRemainingUsage {
 				trace += "[not]"
-			} else {
-				notRemainingUsage = false
 			}
 		}
 		fnTrace = append(fnTrace, trace)
@@ -176,18 +192,19 @@ func (t *CodexCheckTask) CheckAccount(ctx context.Context, account model.TokenAc
 	// 更新数据库
 	trace := strings.Join(fnTrace, "--")
 	extra["trace"] = trace
-	extra["rt_expired"] = refrefreshTokenExpired
+	extra["rt_expired"] = refreshTokenExpired
 	extra["at_expired"] = accessTokenExpired
 	extra["not_remaining_usage"] = notRemainingUsage
 	jbyte, _ := json.Marshal(extra)
 	account.Extra = jbyte
-	if refrefreshTokenExpired && accessTokenExpired {
+	if refreshTokenExpired && accessTokenExpired {
 		account.Status = model.TokenAccountStatusAuthExpired
 	} else if accessTokenExpired {
 		account.Status = model.TokenAccountStatusQuotaExhausted
 		account.ExpiredAt = time.Now().Add(24 * time.Hour * -10)
 		account.Percent = 100
-		account.QuotaRefreshTime = new(time.Now())
+		tRefresh := time.Now()
+		account.QuotaRefreshTime = &tRefresh
 	} else if notRemainingUsage {
 		account.Status = model.TokenAccountStatusQuotaExhausted
 	} else {

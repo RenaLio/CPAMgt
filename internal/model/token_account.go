@@ -29,7 +29,7 @@ type TokenAccount struct {
 	TenantID         uint64                `gorm:"column:tenant_id;not null;index" json:"tenantId"`
 	IDToken          string                `gorm:"column:id_token;type:varchar(512);not null;uniqueIndex:idx_token_accounts_id_token" json:"idToken"`
 	AccessToken      string                `gorm:"column:access_token;type:varchar(512);not null" json:"accessToken"`
-	RefreshToken     string                `gorm:"column:refresh_token;type:varchar(512);not null" json:"refreshToken"`
+	RefreshToken     string                `gorm:"column:refresh_token;type:varchar(512);default:''" json:"refreshToken"`
 	AccountID        string                `gorm:"column:account_id;type:varchar(128);not null;index" json:"accountId"`
 	LastRefresh      *time.Time            `gorm:"column:last_refresh" json:"lastRefresh,omitempty"`
 	Email            string                `gorm:"column:email;type:varchar(320);not null;index" json:"email"`
