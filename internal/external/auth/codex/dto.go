@@ -22,8 +22,8 @@ type UsageResponse struct {
 	RateLimit            RateLimit       `json:"rate_limit"`
 	CodeReviewRateLimit  RateLimit       `json:"code_review_rate_limit"`
 	AdditionalRateLimits json.RawMessage `json:"additional_rate_limits"` // 可用 json.RawMessage 或 *struct{}
-	Credits              Credits         `json:"credits"`
-	Promo                Promo           `json:"promo"`
+	//Credits              Credits         `json:"credits"`
+	//Promo Promo `json:"promo"`
 }
 
 type RateLimit struct {

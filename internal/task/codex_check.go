@@ -173,10 +173,11 @@ func (t *CodexCheckTask) CheckAccount(ctx context.Context, account model.TokenAc
 			}
 			account.Percent = int64(maxPercent)
 
-			// QuotaRefreshTime: 如果耗尽则取最晚的 resetAt，否则用 primary
-			if notRemainingUsage && data.RateLimit.SecondaryWindow != nil && data.RateLimit.SecondaryWindow.ResetAt > resetAt {
-				resetAt = data.RateLimit.SecondaryWindow.ResetAt
+			// 如果 周限(月限) 超过100%
+			if data.RateLimit.SecondaryWindow != nil && data.RateLimit.SecondaryWindow.UsedPercent >= 100 {
+				resetAt = max(resetAt, data.RateLimit.SecondaryWindow.ResetAt)
 			}
+
 			t := time.Unix(resetAt, 0)
 			account.QuotaRefreshTime = &t
 
